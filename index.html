@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="tet">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tama - CandleCarla Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: url("cafsacandle.jpg") center/cover no-repeat fixed; }
+    body::before { content: ''; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); z-index: -1; }
+    .login-container { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 40px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.4); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); width: 90%; max-width: 420px; text-align: center; color: white; animation: fadeIn 1s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .logo { font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 30px; background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C); background-size: 200% auto; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite, float 3s ease-in-out infinite; }
+    @keyframes shine { to { background-position: 200% center; } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .tabs { display: flex; margin-bottom: 25px; background: rgba(255,255,255,0.05); border-radius: 50px; padding: 5px; border: 1px solid rgba(255,255,255,0.1); }
+    .tab { flex: 1; padding: 12px; background: transparent; border: none; cursor: pointer; font-weight: bold; color: rgba(255,255,255,0.6); border-radius: 50px; transition: all 0.4s ease; }
+    .tab.active { background: linear-gradient(45deg, #D4AF37, #FFD700); color: #000; box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); }
+    .tab:hover:not(.active) { color: #fff; background: rgba(255,255,255,0.1); }
+    .input-container { position: relative; width: 100%; margin: 10px 0; }
+    input { width: 100%; padding: 14px 45px 14px 14px; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; background: rgba(0, 0, 0, 0.3); color: #fff; font-size: 15px; transition: 0.3s; }
+    input::placeholder { color: rgba(255,255,255,0.5); }
+    input:focus { border-color: #FFD700; outline: none; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); background: rgba(0, 0, 0, 0.5); }
+    .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; color: #FFD700; font-size: 18px; padding: 5px; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+    .toggle-password:hover { color: #fff; transform: translateY(-50%) scale(1.1); }
+    .toggle-password svg { width: 22px; height: 22px; fill: currentColor; }
+    .submit-btn { width: 100%; padding: 14px; margin-top: 15px; background: linear-gradient(45deg, #D4AF37, #FFD700); color: #000; border: none; border-radius: 10px; font-weight: 900; font-size: 16px; cursor: pointer; transition: all 0.4s ease; text-transform: uppercase; letter-spacing: 1px; position: relative; overflow: hidden; }
+    .submit-btn:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 25px rgba(255, 215, 0, 0.6); }
+    .submit-btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: 0.5s; }
+    .submit-btn:hover::after { left: 100%; }
+    .toggle { margin-top: 20px; font-size: 14px; color: rgba(255,255,255,0.7); }
+    .toggle a { color: #FFD700; text-decoration: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+    .toggle a:hover { text-shadow: 0 0 10px #FFD700; }
+    .error { color: #ff6b6b; margin: 10px 0; font-size: 14px; background: rgba(255,0,0,0.1); padding: 8px; border-radius: 6px; border: 1px solid rgba(255,0,0,0.3); display: none; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="logo">🕯️ CandleCarla</div>
+  
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('admin')">Admin</button>
+    <button class="tab" onclick="switchTab('customer')">Kliente</button>
+  </div>
+
+  <form id="authForm" onsubmit="handleAuth(event)">
+    <div id="errorMsg" class="error"></div>
+        <div id="registerField" class="hidden">
+      <input type="text" id="regUsername" placeholder="Kria Naran-utilizador Foun">
+    </div>
+    
+    <input type="text" id="username" placeholder="Naran-utilizador" required>
+    
+    <div class="input-container">
+      <input type="password" id="password" placeholder="Password" required minlength="6">
+      <button type="button" class="toggle-password" onclick="togglePassword()" title="Hare Password">
+        <svg id="eyeOpen" viewBox="0 0 24 24">
+          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+        </svg>
+        <svg id="eyeClosed" viewBox="0 0 24 24" style="display:none;">
+          <path d="M11.83 9L15 12.17V12c0-1.66-1.34-3-3-3h-.17zm-4.27.27L9.5 11.2V12c0 1.66 1.34 3 3 3h.17l1.93 1.93c-.58.31-1.23.57-1.93.57-2.76 0-5-2.24-5-5 0-.7.26-1.35.57-1.93zM12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5 1.74 0 3.41-.37 4.93-1.03l-1.66-1.66c-1 .43-2.11.69-3.27.69-2.76 0-5-2.24-5-5 0-1.16.26-2.27.69-3.27L6.27 7.73C4.79 8.89 3.5 10.33 2.63 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84L21.37 22l1.41-1.41L1.41 1.41 0 2.83l12 12z"/>
+        </svg>
+      </button>
+    </div>
+    
+    <button type="submit" id="submitBtn" class="submit-btn">Tama hanesan Admin</button>
+  </form>
+  
+  <div class="toggle" id="toggleText">
+    Seiduk iha akun? <a onclick="toggleRegister()">Rejista iha ne'e</a>
+  </div>
+</div>
+
+<script>
+let currentRole = 'admin';
+let isRegisterMode = false;
+let passwordVisible = false;
+
+function switchTab(role) {
+  currentRole = role;
+  isRegisterMode = false;
+  passwordVisible = false;
+  resetPasswordIcon();
+  
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = role === 'admin' ? 'Tama hanesan Admin' : (isRegisterMode ? 'Rejista Akun' : 'Tama hanesan Kliente');
+  
+  document.getElementById('registerField').classList.add('hidden');
+  document.getElementById('toggleText').style.display = role === 'customer' ? 'block' : 'none';
+  document.getElementById('errorMsg').textContent = '';
+  document.getElementById('errorMsg').style.display = 'none';
+}
+
+function toggleRegister() {  isRegisterMode = !isRegisterMode;
+  const regField = document.getElementById('registerField');
+  const submitBtn = document.getElementById('submitBtn');
+  
+  if (isRegisterMode) {
+    regField.classList.remove('hidden');
+    submitBtn.textContent = 'Rejista Akun';
+  } else {
+    regField.classList.add('hidden');
+    submitBtn.textContent = 'Tama hanesan Kliente';
+  }
+  document.getElementById('errorMsg').textContent = '';
+  document.getElementById('errorMsg').style.display = 'none';
+}
+
+function togglePassword() {
+  const passwordInput = document.getElementById('password');
+  const eyeOpen = document.getElementById('eyeOpen');
+  const eyeClosed = document.getElementById('eyeClosed');
+  
+  passwordVisible = !passwordVisible;
+  
+  if (passwordVisible) {
+    passwordInput.type = 'text';
+    eyeOpen.style.display = 'none';
+    eyeClosed.style.display = 'block';
+  } else {
+    passwordInput.type = 'password';
+    eyeOpen.style.display = 'block';
+    eyeClosed.style.display = 'none';
+  }
+}
+
+function resetPasswordIcon() {
+  const passwordInput = document.getElementById('password');
+  passwordInput.type = 'password';
+  passwordVisible = false;
+  document.getElementById('eyeOpen').style.display = 'block';
+  document.getElementById('eyeClosed').style.display = 'none';
+}
+
+async function handleAuth(e) {
+  e.preventDefault();
+  
+  const errorMsg = document.getElementById('errorMsg');
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  
+  errorMsg.style.display = 'none';
+  errorMsg.textContent = '';  
+  try {
+    let endpoint, body;
+    
+    if (isRegisterMode) {
+      const regUsername = document.getElementById('regUsername').value.trim();
+      if (!regUsername) {
+        errorMsg.textContent = '❌ Naran-utilizador tenki isi!';
+        errorMsg.style.display = 'block';
+        return;
+      }
+      
+      endpoint = 'api/register.php';
+      body = { username: regUsername, password: password };
+      
+    } else {
+      if (!username || !password) {
+        errorMsg.textContent = '❌ Naran-utilizador no password tenki isi!';
+        errorMsg.style.display = 'block';
+        return;
+      }
+      
+      endpoint = 'api/login.php';
+      body = { username: username, password: password };
+    }
+    
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      if (isRegisterMode) {
+        alert('✅ Rejista susesu! Favor tama agora.');
+        toggleRegister();
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('regUsername').value = '';
+        resetPasswordIcon();
+      } else {
+        localStorage.setItem('user', JSON.stringify({
+          username: data.username || username,
+          role: data.role || currentRole
+        }));
+        
+        const redirectUrl = data.role === 'admin' ? 'admin.html' : 'customer.html';
+        window.location.href = redirectUrl;      }
+    } else {
+      let msg = data.message;
+      if (msg === 'Username atau password salah') msg = 'Naran-utilizador ka password sala';
+      else if (msg === 'Username sudah terdaftar') msg = 'Naran-utilizador uza tiha ona';
+      errorMsg.textContent = '❌ ' + (msg || 'Akontese error');
+      errorMsg.style.display = 'block';
+    }
+    
+  } catch (error) {
+    console.error('Error:', error);
+    errorMsg.textContent = '❌ Koneksaun la\'e. Certifique XAMPP la\'o tiha ona!';
+    errorMsg.style.display = 'block';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('toggleText').style.display = 'none';
+  document.getElementById('errorMsg').style.display = 'none';
+});
+</script>
+</body>
+</html>

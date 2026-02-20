@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="tet">
+<head>
+  <meta charset="UTF-8" />
+  <title>CandleCarla Shop - Lilin Aroma Timor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { min-height: 100vh; background: url("cafsacandle.jpg") center/cover no-repeat fixed; color: #fff; padding-bottom: 50px; }
+    body::before { content: ''; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); z-index: -1; }
+    .topbar { background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(10px); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 22px; font-weight: bold; background: linear-gradient(to right, #FFD700, #FDB931); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .top-right { display: flex; align-items: center; gap: 10px; }
+    .btn-gold { background: linear-gradient(45deg, #D4AF37, #FFD700); color: #000; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .btn-gold:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 5px 15px rgba(255,215,0,0.4); }
+    .btn-chat { background: linear-gradient(45deg, #1E90FF, #4169E1); color: white; }
+    .btn-chat:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4); }
+    .btn-login { background: linear-gradient(45deg, #D4AF37, #FFD700); color: #000; padding: 8px 15px; font-size: 13px; }
+    .btn-login:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 5px 15px rgba(255,215,0,0.4); }
+    .container { padding: 20px; max-width: 1200px; margin: auto; }
+    .welcome-banner { background: rgba(212, 175, 55, 0.2); border: 1px solid rgba(255, 215, 0, 0.4); border-radius: 15px; padding: 20px; margin-bottom: 20px; text-align: center; }
+    .welcome-banner h2 { color: #FFD700; margin-bottom: 10px; }
+    .welcome-banner p { color: #fff; line-height: 1.6; }
+    .customer-slider { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; padding: 20px; margin-bottom: 30px; text-align: center; }
+    .slider-track { display: flex; gap: 20px; overflow-x: auto; padding: 10px; scroll-behavior: smooth; }
+    .slider-track::-webkit-scrollbar { height: 8px; }
+    .slider-track::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+    .slide-card { min-width: 250px; background: rgba(0,0,0,0.4); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+    .slide-card:hover { transform: scale(1.03); border-color: #FFD700; }
+    .slide-card img { width: 100%; height: 180px; object-fit: cover; }
+    .slide-card h3 { color: #FFD700; padding: 10px; font-size: 18px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+    .product-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 15px; overflow: hidden; transition: 0.3s; }
+    .product-card:hover { transform: translateY(-8px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-color: #FFD700; }
+    .product-card img { width: 100%; height: 250px; object-fit: cover; cursor: pointer; }
+    .product-card h3 { color: #fff; padding: 15px 15px 5px; margin: 0; }
+    .product-card p { padding: 0 15px 15px; color: #ccc; font-size: 14px; }
+    .btn-buy { width: 90%; margin: 0 auto 15px; background: linear-gradient(45deg, #25D366, #128C7E); color: white; border: none; padding: 12px; border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.3s; display: block; }
+    .btn-buy:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); }
+    #preview { position:fixed; inset:0; background:#000c; display:none; justify-content:center; align-items:center; z-index:1000; cursor:pointer; }
+    #preview img { max-width:90%; max-height:90%; border:2px solid #FFD700; border-radius:10px; }
+    .login-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
+    .login-modal.active { display: flex; }
+    .login-box { background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(15px); padding: 40px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.4); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); width: 90%; max-width: 400px; text-align: center; color: white; animation: slideDown 0.3s ease-out; position: relative; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+    .login-box h2 { color: #FFD700; margin-bottom: 20px; font-size: 24px; }
+    .login-box .close-btn { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: #fff; font-size: 24px; cursor: pointer; transition: 0.3s; }
+    .login-box .close-btn:hover { color: #FFD700; transform: scale(1.2); }
+    .login-box input { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; background: rgba(0, 0, 0, 0.3); color: #fff; font-size: 15px; }
+    .login-box input::placeholder { color: rgba(255,255,255,0.5); }    .login-box input:focus { outline: none; border-color: #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+    .login-box .submit-btn { width: 100%; padding: 14px; margin-top: 15px; background: linear-gradient(45deg, #D4AF37, #FFD700); color: #000; border: none; border-radius: 10px; font-weight: 900; font-size: 16px; cursor: pointer; transition: all 0.4s ease; text-transform: uppercase; }
+    .login-box .submit-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 25px rgba(255, 215, 0, 0.6); }
+    .login-box .error-msg { color: #ff6b6b; margin: 10px 0; font-size: 14px; background: rgba(255,0,0,0.1); padding: 8px; border-radius: 6px; display: none; }
+    .login-box .logo-small { font-size: 40px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">🕯️ CandleCarla</div>
+  <div class="top-right">
+    <button class="btn-gold btn-chat" onclick="chatAdmin()">💬 Chat Admin</button>
+    <button class="btn-gold btn-login" onclick="openLoginModal()">🔐 Admin</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="welcome-banner">
+    <h2>🌟 Benvindu ba CandleCarla Shop!</h2>
+    <p>🛍️ Hau iha sasan ho kualidade di'ak!<br>📞 Klik "Chat Admin" atu halo pergunta ka "Beli via WhatsApp" atu kompra!</p>
+  </div>
+  
+  <div class="customer-slider">
+    <h3 style="color:#FFD700; margin-bottom:15px; text-transform:uppercase; letter-spacing:2px;">✨ Produk Escolhida</h3>
+    <div id="customerSlider" class="slider-track"></div>
+  </div>
+  
+  <h3 style="color:#FFD700; margin:20px 0 15px; text-align:center; text-transform:uppercase;">🛒 Lista Produk</h3>
+  <div id="userList" class="grid"></div>
+</div>
+
+<div id="preview" onclick="this.style.display='none'"><img id="bigImg"></div>
+
+<div class="login-modal" id="loginModal">
+  <div class="login-box">
+    <button class="close-btn" onclick="closeLoginModal()">×</button>
+    <div class="logo-small">🕯️</div>
+    <h2>Tama hanesan Admin</h2>
+    <div class="error-msg" id="loginError"></div>
+    <input type="text" id="adminUsername" placeholder="Naran-utilizador">
+    <input type="password" id="adminPassword" placeholder="Password">
+    <button class="submit-btn" onclick="adminLogin()">Tama</button>
+    <p style="margin-top: 15px; font-size: 12px; color: rgba(255,255,255,0.5);">
+      Admin default: <strong>admin</strong> / <strong>admin123</strong>
+    </p>
+  </div>
+</div>
+
+<script>const API_BASE = 'api';
+const WA = "67076817435";
+
+function openLoginModal() {
+  document.getElementById('loginModal').classList.add('active');
+  document.getElementById('adminUsername').value = '';
+  document.getElementById('adminPassword').value = '';
+  document.getElementById('loginError').style.display = 'none';
+  document.getElementById('adminUsername').focus();
+}
+
+function closeLoginModal() {
+  document.getElementById('loginModal').classList.remove('active');
+}
+
+document.getElementById('loginModal').addEventListener('click', function(e) {
+  if (e.target === this) closeLoginModal();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLoginModal();
+});
+
+async function adminLogin() {
+  const username = document.getElementById('adminUsername').value.trim();
+  const password = document.getElementById('adminPassword').value;
+  const errorDiv = document.getElementById('loginError');
+  
+  if (!username || !password) {
+    errorDiv.textContent = '❌ Naran-utilizador no password tenki isi!';
+    errorDiv.style.display = 'block';
+    return;
+  }
+  
+  try {
+    const response = await fetch(`${API_BASE}/login.php`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success && data.role === 'admin') {
+      alert('✅ Tama susesu! Bem-vindu ba Admin Panel.');
+      closeLoginModal();
+      window.location.href = 'admin.html';
+    } else {
+      errorDiv.textContent = '❌ ' + (data.message || 'Naran-utilizador ka password sala');
+      errorDiv.style.display = 'block';    }
+  } catch (error) {
+    console.error('Error:', error);
+    errorDiv.textContent = '❌ Koneksaun la\'e. Certifique XAMPP la\'o tiha ona!';
+    errorDiv.style.display = 'block';
+  }
+}
+
+async function api(endpoint) {
+  const res = await fetch(`${API_BASE}/${endpoint}`);
+  return res.json();
+}
+
+async function renderUser() {
+  try {
+    const products = await api('products.php');
+    const container = document.getElementById('userList');
+    const slider = document.getElementById('customerSlider');
+    
+    if (!products || products.length === 0) {
+      container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#999">Seiduk iha produk. Favor kontata admin atu hatama koleksaun foun!</p>';
+      slider.innerHTML = '<p style="margin:auto;color:#999">Seiduk iha produk</p>';
+      return;
+    }
+    
+    container.innerHTML = products.map(p => {
+      const imgs = (p.images || []).map(img => `<img src="${img}" onclick="previewImg('${img}')" onerror="this.style.display='none'">`).join("");
+      const harga = p.harga || 0;
+      
+      return `<div class="product-card">
+        ${imgs}
+        <h3>${p.nama || 'Sem Naran'}</h3>
+        <p>${p.warna || '-'} • ${p.ukuran || '-'}</p>
+        <p style="color: #FFD700; font-weight: bold; font-size: 16px;">$ ${parseInt(harga).toLocaleString('en-US')}</p>
+        <button class="btn-buy" onclick="beli('${(p.nama||'').replace(/'/g, "\\'")}','${(p.warna||'').replace(/'/g, "\\'")}','${(p.ukuran||'').replace(/'/g, "\\'")}',${harga})">🛒 Beli via WhatsApp</button>
+      </div>`;
+    }).join('');
+    
+    const sliderItems = products.slice(0, 5).map(p => {
+      const img = Array.isArray(p.images) ? p.images[0] : '';
+      return `<div class="slide-card">
+        <img src="${img}" onclick="previewImg('${img}')">
+        <h3>${p.nama || 'Sem Naran'}</h3>
+      </div>`;
+    }).join('');
+    slider.innerHTML = sliderItems;
+    
+  } catch (error) {
+    console.error('Error render:', error);
+    document.getElementById('userList').innerHTML = '<p style="color:red;text-align:center;">Error load produk</p>';  }
+}
+
+function beli(nama, warna, ukuran, harga) {
+  const msg = encodeURIComponent(`🕯️ Halo Admin CandleCarla Shop!
+
+Hau hakarak beli produk ne'e:
+
+📦 Naran: ${nama}
+🎨 Kor: ${warna}
+📏 Size: ${ukuran}
+💰 Folin: $ ${parseInt(harga).toLocaleString('en-US')}
+
+Favor halo konfirmasaun atu hau bele halo pagamentu.
+
+Obrigadu! 🙏`);
+  window.open(`https://wa.me/${WA}?text=${msg}`, '_blank');
+}
+
+function chatAdmin() {
+  const t = prompt("📝 Hakarak pergunta saida ba Admin?\n\nContoh:\n- Iha deskontu ka lae?\n- Koko entrega?\n- Iha promo foun?");
+  if (t && t.trim() !== '') {
+    const msg = encodeURIComponent(`🕯️ Halo Admin CandleCarla Shop!
+
+💬 Kliente pergunta:
+"${t.trim()}"
+
+Favor responde tanba kliente halo pergunta.`);
+    window.open(`https://wa.me/${WA}?text=${msg}`, '_blank');
+  } else if (t !== null) {
+    alert('❌ Favor isi pergunta!');
+  }
+}
+
+function previewImg(src) {
+  document.getElementById('bigImg').src = src;
+  document.getElementById('preview').style.display = 'flex';
+}
+
+document.addEventListener('DOMContentLoaded', renderUser);
+</script>
+</body>
+</html>
